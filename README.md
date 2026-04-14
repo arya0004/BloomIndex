@@ -100,6 +100,28 @@ Bloom_index_dashboard.html
 
 
 ---
+📈 Use Cases
+Startup idea validation
+Venture capital decision support
+Market timing analysis
+Business revival strategy
+Predictive economic insights
+
+
+🔬 Tech Stack
+Backend: Python
+Machine Learning: XGBoost, LSTM
+Frontend: HTML, CSS, JavaScript
+Visualization: Chart.js
+
+
+📌 Future Enhancements
+Real-time financial API integration
+AI-powered idea recommendation engine
+Cloud deployment (AWS / GCP)
+Mobile-friendly dashboard
+
+
 
 ## 📊 Example Output  
 
@@ -116,21 +138,6 @@ Bloom_index_dashboard.html
 }
 
 
-📈 Use Cases
-Startup idea validation
-Venture capital decision support
-Market timing analysis
-Business revival strategy
-Predictive economic insights
 
 
-🔬 Tech Stack
-Backend: Python
-Machine Learning: XGBoost, LSTM
-Frontend: HTML, CSS, JavaScript
-Visualization: Chart.js
-📌 Future Enhancements
-Real-time financial API integration
-AI-powered idea recommendation engine
-Cloud deployment (AWS / GCP)
-Mobile-friendly dashboard
+
