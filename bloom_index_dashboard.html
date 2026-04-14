@@ -1,0 +1,930 @@
+
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+
+
+  :root {
+    --color-background-primary: #0f1115;
+    --color-background-secondary: #161920;
+    --color-background-tertiary: #1f232d;
+    --color-border-primary: rgba(255, 255, 255, 0.2);
+    --color-border-secondary: rgba(255, 255, 255, 0.1);
+    --color-border-tertiary: rgba(255, 255, 255, 0.05);
+
+
+    --color-text-primary: #f8fafc;
+    --color-text-secondary: #94a3b8;
+    --color-text-tertiary: #64748b;
+
+
+    --color-text-success: #34d399;
+    --color-text-danger: #f87171;
+    --color-text-warning: #fbbf24;
+    --color-text-info: #60a5fa;
+
+
+    --color-background-success: rgba(52, 211, 153, 0.15);
+    --color-background-danger: rgba(248, 113, 113, 0.15);
+    --color-background-warning: rgba(251, 191, 36, 0.15);
+    --color-background-info: rgba(96, 165, 250, 0.15);
+
+
+    --font-sans: 'Inter', sans-serif;
+    --font-mono: 'Fira Code', monospace;
+
+
+    --border-radius-sm: 6px;
+    --border-radius-md: 10px;
+    --border-radius-lg: 16px;
+  }
+
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-background-primary);
+    color: var(--color-text-primary);
+    line-height: 1.5;
+    margin: 0;
+    padding: 20px;
+    background-image:
+      radial-gradient(circle at 15% 50%, rgba(29, 158, 117, 0.08), transparent 25%),
+      radial-gradient(circle at 85% 30%, rgba(239, 159, 39, 0.05), transparent 25%);
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+  }
+
+
+  .app { max-width: 1200px; margin: 0 auto; padding: 1rem 0; }
+
+
+  .top-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 2rem; padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border-tertiary);
+  }
+  .logo { display: flex; align-items: center; gap: 14px; }
+  .logo-icon {
+    width: 48px; height: 48px; border-radius: 14px;
+    background: linear-gradient(135deg, #1D9E75, #2abf90);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 4px 15px rgba(29, 158, 117, 0.3);
+  }
+  .logo-text { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; background: linear-gradient(90deg, #fff, #cbd5e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .logo-sub { font-size: 13px; color: var(--color-text-secondary); font-weight: 400; margin-top: 2px;}
+
+
+  .tabs { display: flex; gap: 8px; background: var(--color-background-secondary); padding: 6px; border-radius: var(--border-radius-md); border: 1px solid var(--color-border-tertiary); }
+  .tab {
+    padding: 8px 16px; border-radius: var(--border-radius-sm);
+    border: none;
+    background: transparent; color: var(--color-text-secondary);
+    font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s ease;
+  }
+  .tab:hover { color: var(--color-text-primary); }
+  .tab.active {
+    background: var(--color-background-tertiary);
+    color: var(--color-text-primary);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 2rem; }
+  .metric {
+    background: rgba(26, 29, 36, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg); padding: 20px;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .metric:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-border-secondary);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+  .metric-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600;}
+  .metric-value { font-size: 32px; font-weight: 700; line-height: 1.1; margin-bottom: 8px; }
+  .metric-delta { font-size: 12px; margin-top: 4px; display: inline-flex; align-items: center; gap: 4px; font-weight: 500; }
+  .up { color: var(--color-text-success); }
+  .down { color: var(--color-text-danger); }
+  .neutral { color: var(--color-text-secondary); }
+
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+  .card {
+    background: rgba(26, 29, 36, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg); padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+  .card-title { font-size: 14px; font-weight: 600; margin-bottom: 20px; color: var(--color-text-primary); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; border-bottom: 1px solid var(--color-border-tertiary); padding-bottom: 12px;}
+
+
+  /* Bloom Score Gauge */
+  .gauge-wrap { display: flex; flex-direction: column; align-items: center; }
+  .gauge-label { font-size: 28px; font-weight: 500; margin-top: 8px; }
+  .gauge-sub { font-size: 12px; color: var(--color-text-secondary); }
+
+
+  /* Comeback Kids list */
+  .kid {
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px 12px; border-radius: var(--border-radius-md);
+    border: 1px solid transparent;
+    cursor: pointer; transition: all 0.2s ease;
+    margin-bottom: 4px;
+    background: transparent;
+  }
+  .kid:hover { background: var(--color-background-tertiary); border-color: var(--color-border-secondary); }
+  .kid-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .kid-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; color: var(--color-text-primary); }
+  .kid-meta { font-size: 12px; color: var(--color-text-secondary); line-height: 1.3; }
+  .kid-score {
+    margin-left: auto; font-size: 14px; font-weight: 600;
+    padding: 6px 14px; border-radius: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  .score-high { background: var(--color-background-success); color: var(--color-text-success); border: 1px solid var(--color-text-success); }
+  .score-med { background: var(--color-background-warning); color: var(--color-text-warning); border: 1px solid var(--color-text-warning); }
+  .score-low { background: var(--color-background-info); color: var(--color-text-info); border: 1px solid var(--color-text-info); }
+
+
+  /* War/climate map */
+  .map-container { position: relative; border-radius: var(--border-radius-lg); overflow: hidden; border: 1px solid var(--color-border-tertiary); background: #0b0d10;}
+  .map-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; font-size: 12px; color: var(--color-text-secondary); justify-content: center;}
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 6px; vertical-align: -2px; }
+
+
+  /* Failure taxonomy */
+  .fail-bar { margin-bottom: 14px; }
+  .fail-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; color: var(--color-text-primary); }
+  .fail-track { height: 8px; background: rgba(0,0,0,0.3); border-radius: 4px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); }
+  .fail-fill { height: 100%; border-radius: 4px; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 10px rgba(29, 158, 117, 0.5); }
+
+
+  /* Time series sparkline area */
+  .spark-label { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 6px; }
+
+
+  /* Feature importance */
+  .feat-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font-size: 13px; }
+  .feat-name { width: 140px; color: var(--color-text-secondary); flex-shrink: 0; }
+  .feat-bar-wrap { flex: 1; height: 8px; background: rgba(0,0,0,0.3); border-radius: 4px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); }
+  .feat-bar { height: 100%; border-radius: 4px; }
+  .feat-val { width: 40px; text-align: right; font-weight: 600; color: var(--color-text-primary); }
+
+
+  /* Selected idea detail panel */
+  .detail-panel {
+    background: linear-gradient(180deg, var(--color-background-tertiary), var(--color-background-secondary));
+    border: 1px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-lg); padding: 1.5rem;
+    margin-bottom: 1.5rem; display: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .detail-panel.visible { display: block; }
+  .detail-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--color-border-tertiary); padding-bottom: 16px; }
+  .detail-body { font-size: 14px; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 20px;}
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
+  .detail-stat { background: rgba(0,0,0,0.2); border: 1px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 16px 12px; text-align: center; }
+  .detail-stat-val { font-size: 22px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 4px; }
+  .detail-stat-label { font-size: 11px; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+
+
+  /* Tabs panel */
+  .panel { display: none; animation: fadeIn 0.3s ease; }
+  .panel.active { display: block; }
+
+
+  .bloom-formula {
+    background: rgba(0,0,0,0.2); border: 1px solid var(--color-border-tertiary); border-radius: var(--border-radius-md);
+    padding: 16px 20px; font-size: 15px; font-family: var(--font-mono);
+    color: var(--color-text-primary); margin-bottom: 1.5rem; text-align: center;
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
+  }
+  .formula-var { color: var(--color-text-success); font-weight: 600; background: rgba(52, 211, 153, 0.1); padding: 2px 6px; border-radius: 4px; }
+
+
+  button { cursor: pointer; background: var(--color-background-tertiary); border: 1px solid var(--color-border-secondary); color: var(--color-text-primary); border-radius: var(--border-radius-sm); transition: all 0.2s; font-family: var(--font-sans); }
+  button:hover { background: var(--color-border-primary); color: #fff; }
+
+
+  input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: var(--color-text-success); cursor: pointer; margin-top: -6px; box-shadow: 0 0 10px rgba(52,211,153,0.5); }
+  input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: rgba(255,255,255,0.1); border-radius: 2px; }
+</style>
+
+
+<div class="app">
+  <div class="top-bar">
+    <div class="logo">
+      <div class="logo-icon">🌱</div>
+      <div>
+        <div class="logo-text">BloomIndex</div>
+        <div class="logo-sub">Business fitness &amp; timing intelligence</div>
+      </div>
+    </div>
+        <div class="tabs">
+      <button class="tab active" onclick="switchTab('home')">Home</button>
+      <button class="tab" onclick="switchTab('overview')">Signals</button>
+      <button class="tab" onclick="switchTab('map')">Geotrade Map</button>
+      <button class="tab" onclick="switchTab('search')">Search & Compare</button>
+      <button class="tab" onclick="switchTab('forecast')">Forecast</button>
+      <button class="tab" onclick="switchTab('model')">ML Engine</button>
+      <button class="tab" onclick="switchTab('formula')">Bloom Formula</button>
+    </div>
+  </div>
+
+
+  <!-- METRICS ROW -->
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">Active Bloom Signals</div>
+      <div class="metric-value" style="color:#1D9E75">47</div>
+      <div class="metric-delta up">↑ 12 this quarter</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Ideas Analyzed</div>
+      <div class="metric-value">2,841</div>
+      <div class="metric-delta neutral">across 14 categories</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Avg. Bloom Score</div>
+      <div class="metric-value" style="color:#BA7517">68.4</div>
+      <div class="metric-delta up">↑ 4.2 vs last cycle</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">War-affected zones</div>
+      <div class="metric-value" style="color:#E24B4A">23</div>
+      <div class="metric-delta down">↓ 3 de-escalations</div>
+    </div>
+  </div>
+
+
+
+
+  <!-- HOME PANEL -->
+  <div id="panel-home" class="panel active">
+    <div class="card" style="margin-bottom: 2rem;">
+      <h2 style="margin-bottom: 1rem; color: var(--color-text-success);">Welcome to BloomIndex AI</h2>
+      <p style="color: var(--color-text-secondary); margin-bottom: 1.5rem; font-size: 15px; line-height: 1.6;">
+        BloomIndex is a global predictive engine that analyzes historical business failures and scores their probability of success <strong>today</strong> based on real-time macro conditions. We cross-reference live stock market data, active geopolitical conflict zones (trade disruption), tech maturity, and capital availability.<br><br>
+        <strong>Key Variables:</strong><br><br>
+        • <strong>Tₙ (Tech Maturity):</strong> Measures if AI/hardware can now support the idea.<br>
+        • <strong>Sₙ (Social Readiness):</strong> Measures if society/culture is ready to adopt it post-pandemic.<br>
+        • <strong>Cₙ (Capital Access):</strong> Evaluates fed interest rates and VC funding climate.<br>
+        • <strong>Wₙ (War/Stability):</strong> Geopolitical tension which disrupts supply chains but creates opportunities for defense/local tech.<br>
+        • <strong>Rₚ (Failure Weight):</strong> How fundamentally flawed the original failure was.
+      </p>
+      <button onclick="switchTab('overview')" style="padding: 10px 20px; font-weight: 600; background: var(--color-background-success); color: var(--color-text-success); border: 1px solid var(--color-text-success); border-radius: 8px;">Explore Active Signals ↗</button>
+    </div>
+  </div>
+
+
+  <!-- OVERVIEW PANEL -->
+  <div id="panel-overview" class="panel">
+    <div class="grid-2">
+      <!-- Bloom Gauge -->
+      <div class="card">
+        <div class="card-title">Market Season Index</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div class="gauge-wrap">
+            <svg width="130" height="75" viewBox="0 0 130 75">
+              <defs>
+                <linearGradient id="arcG" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#E24B4A"/>
+                  <stop offset="50%" stop-color="#EF9F27"/>
+                  <stop offset="100%" stop-color="#1D9E75"/>
+                </linearGradient>
+              </defs>
+              <path d="M10 68 A55 55 0 0 1 120 68" fill="none" stroke="var(--color-border-tertiary)" stroke-width="10" stroke-linecap="round"/>
+              <path d="M10 68 A55 55 0 0 1 120 68" fill="none" stroke="url(#arcG)" stroke-width="10" stroke-linecap="round" stroke-dasharray="173" stroke-dashoffset="52"/>
+              <text x="65" y="58" text-anchor="middle" font-size="20" font-weight="500" fill="var(--color-text-primary)">7.1</text>
+              <text x="65" y="70" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">/ 10</text>
+              <text x="12" y="74" font-size="8" fill="var(--color-text-secondary)">Bear</text>
+              <text x="100" y="74" font-size="8" fill="var(--color-text-secondary)">Bull</text>
+            </svg>
+            <div style="font-size:12px;color:var(--color-text-secondary);text-align:center">Tech Climate</div>
+          </div>
+          <div class="gauge-wrap">
+            <svg width="130" height="75" viewBox="0 0 130 75">
+              <path d="M10 68 A55 55 0 0 1 120 68" fill="none" stroke="var(--color-border-tertiary)" stroke-width="10" stroke-linecap="round"/>
+              <path d="M10 68 A55 55 0 0 1 120 68" fill="none" stroke="#1D9E75" stroke-width="10" stroke-linecap="round" stroke-dasharray="173" stroke-dashoffset="35"/>
+              <text x="65" y="58" text-anchor="middle" font-size="20" font-weight="500" fill="var(--color-text-primary)">8.0</text>
+              <text x="65" y="70" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">/ 10</text>
+              <text x="12" y="74" font-size="8" fill="var(--color-text-secondary)">Low</text>
+              <text x="100" y="74" font-size="8" fill="var(--color-text-secondary)">High</text>
+            </svg>
+            <div style="font-size:12px;color:var(--color-text-secondary);text-align:center">Social Readiness</div>
+          </div>
+          <div class="gauge-wrap">
+            <svg width="130" height="75" viewBox="0 0 130 75">
+              <path d="M10 68 A55 55 0 0 1 120 68" fill="none" stroke="var(--color-border-tertiary)" stroke-width="10" stroke-linecap="round"/>
+              <path d="M10 68 A55 55 0 0 1 120 68" fill="none" stroke="#E24B4A" stroke-width="10" stroke-linecap="round" stroke-dasharray="173" stroke-dashoffset="112"/>
+              <text x="65" y="58" text-anchor="middle" font-size="20" font-weight="500" fill="var(--color-text-primary)">3.5</text>
+              <text x="65" y="70" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">/ 10</text>
+              <text x="12" y="74" font-size="8" fill="var(--color-text-secondary)">Easy</text>
+              <text x="100" y="74" font-size="8" fill="var(--color-text-secondary)">Tight</text>
+            </svg>
+            <div style="font-size:12px;color:var(--color-text-secondary);text-align:center">Capital Access</div>
+          </div>
+          <div class="gauge-wrap">
+            <svg width="130" height="75" viewBox="0 0 130 75">
+              <path d="M10 68 A55 55 0 0 1 120 68" fill="none" stroke="var(--color-border-tertiary)" stroke-width="10" stroke-linecap="round"/>
+              <path d="M10 68 A55 55 0 0 1 120 68" fill="none" stroke="#EF9F27" stroke-width="10" stroke-linecap="round" stroke-dasharray="173" stroke-dashoffset="70"/>
+              <text x="65" y="58" text-anchor="middle" font-size="20" font-weight="500" fill="var(--color-text-primary)">5.9</text>
+              <text x="65" y="70" text-anchor="middle" font-size="9" fill="var(--color-text-secondary)">/ 10</text>
+              <text x="12" y="74" font-size="8" fill="var(--color-text-secondary)">Peace</text>
+              <text x="100" y="74" font-size="8" fill="var(--color-text-secondary)">Conflict</text>
+            </svg>
+            <div style="font-size:12px;color:var(--color-text-secondary);text-align:center">Geopolitical Stability</div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Comeback Kids -->
+      <div class="card">
+        <div class="card-title">Comeback Kids — Top Bloom Signals</div>
+        <div id="kids-list">
+          <div class="kid" onclick="showDetail(0)">
+            <div class="kid-icon" style="background:#E1F5EE">🚚</div>
+            <div>
+              <div class="kid-name">Hyper-local Delivery</div>
+              <div class="kid-meta">Failed: 1999 (Webvan) · Revival driver: geotrade fragmentation</div>
+            </div>
+            <div class="kid-score score-high">94</div>
+          </div>
+          <div class="kid" onclick="showDetail(1)">
+            <div class="kid-icon" style="background:#EAF3DE">🥽</div>
+            <div>
+              <div class="kid-name">VR Social Spaces</div>
+              <div class="kid-meta">Failed: 2003 (Second Life) · Revival driver: remote-first culture</div>
+            </div>
+            <div class="kid-score score-high">88</div>
+          </div>
+          <div class="kid" onclick="showDetail(2)">
+            <div class="kid-icon" style="background:#FAEEDA">⚡</div>
+            <div>
+              <div class="kid-name">Decentralized Energy</div>
+              <div class="kid-meta">Failed: 2004 (cheap oil era) · Revival driver: climate + energy wars</div>
+            </div>
+            <div class="kid-score score-high">85</div>
+          </div>
+          <div class="kid" onclick="showDetail(3)">
+            <div class="kid-icon" style="background:#E6F1FB">🤖</div>
+            <div>
+              <div class="kid-name">AI Personal Assistants</div>
+              <div class="kid-meta">Failed: 2014 (Google Glass) · Revival driver: LLM maturity</div>
+            </div>
+            <div class="kid-score score-med">76</div>
+          </div>
+          <div class="kid" onclick="showDetail(4)">
+            <div class="kid-icon" style="background:#FBEAF0">🧬</div>
+            <div>
+              <div class="kid-name">mRNA Therapeutics</div>
+              <div class="kid-meta">Failed: 1990s (delivery problem) · Revival driver: post-pandemic trust</div>
+            </div>
+            <div class="kid-score score-med">71</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Detail Panel -->
+    <div class="detail-panel" id="detail-panel">
+      <div class="detail-header">
+        <div id="detail-icon" style="width:44px;height:44px;border-radius:var(--border-radius-md);display:flex;align-items:center;justify-content:center;font-size:22px;"></div>
+        <div>
+          <div id="detail-name" style="font-size:16px;font-weight:500;"></div>
+          <div id="detail-story" style="font-size:12px;color:var(--color-text-secondary);"></div>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:8px">
+          <button onclick="sendPrompt('Give me a full business plan for reviving this idea using the BloomIndex framework')" style="font-size:12px;padding:6px 12px">Build revival plan ↗</button>
+          <button onclick="document.getElementById('detail-panel').classList.remove('visible')" style="font-size:12px;padding:6px 12px">×</button>
+        </div>
+      </div>
+      <div class="detail-body" id="detail-body"></div>
+      <div class="detail-grid" id="detail-grid"></div>
+    </div>
+
+
+    <!-- Sparkline + Failure taxonomy row -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Market Seasonality Forecast (LSTM)</div>
+        <div style="height: 180px; position: relative; width: 100%;"><canvas id="sparkChart" role="img" aria-label="Time series forecast of market bloom cycles"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Historical Failure Taxonomy (XGBoost)</div>
+        <div style="margin-top:4px">
+          <div class="fail-bar">
+            <div class="fail-label"><span>Timing mismatch</span><span style="font-weight:500">34%</span></div>
+            <div class="fail-track"><div class="fail-fill" style="width:34%;background:#1D9E75"></div></div>
+          </div>
+          <div class="fail-bar">
+            <div class="fail-label"><span>Tech not ready</span><span style="font-weight:500">28%</span></div>
+            <div class="fail-track"><div class="fail-fill" style="width:28%;background:#1D9E75"></div></div>
+          </div>
+          <div class="fail-bar">
+            <div class="fail-label"><span>Capital drought</span><span style="font-weight:500">19%</span></div>
+            <div class="fail-track"><div class="fail-fill" style="width:19%;background:#EF9F27"></div></div>
+          </div>
+          <div class="fail-bar">
+            <div class="fail-label"><span>Social unreadiness</span><span style="font-weight:500">12%</span></div>
+            <div class="fail-track"><div class="fail-fill" style="width:12%;background:#EF9F27"></div></div>
+          </div>
+          <div class="fail-bar">
+            <div class="fail-label"><span>Geopolitical shock</span><span style="font-weight:500">7%</span></div>
+            <div class="fail-track"><div class="fail-fill" style="width:7%;background:#E24B4A"></div></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;padding-top:12px;border-top:0.5px solid var(--color-border-tertiary)">
+          <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em">Feature importance</div>
+          <div class="feat-row"><div class="feat-name">Tech maturity Tₙ</div><div class="feat-bar-wrap"><div class="feat-bar" style="width:87%;background:#1D9E75"></div></div><div class="feat-val">0.87</div></div>
+          <div class="feat-row"><div class="feat-name">Social readiness Sₙ</div><div class="feat-bar-wrap"><div class="feat-bar" style="width:72%;background:#1D9E75"></div></div><div class="feat-val">0.72</div></div>
+          <div class="feat-row"><div class="feat-name">Capital context Cₙ</div><div class="feat-bar-wrap"><div class="feat-bar" style="width:58%;background:#EF9F27"></div></div><div class="feat-val">0.58</div></div>
+          <div class="feat-row"><div class="feat-name">War index Wₙ</div><div class="feat-bar-wrap"><div class="feat-bar" style="width:45%;background:#EF9F27"></div></div><div class="feat-val">0.45</div></div>
+          <div class="feat-row"><div class="feat-name">Failure reason Rₚ</div><div class="feat-bar-wrap"><div class="feat-bar" style="width:31%;background:#E24B4A"></div></div><div class="feat-val">0.31</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- GEOTRADE MAP PANEL -->
+  <div id="panel-map" class="panel">
+    <div class="card" style="margin-bottom:1rem">
+      <div class="card-title">Geotrade Climate War Map — Global Bloom Conditions</div>
+      <div class="map-container">
+        <svg width="100%" viewBox="0 0 680 340" role="img">
+          <title>Geotrade Climate War Map showing bloom conditions by region</title>
+          <rect x="0" y="0" width="680" height="340" fill="var(--color-background-secondary)" rx="8"/>
+          <!-- Simplified world region shapes -->
+          <!-- North America -->
+          <g class="node" onclick="showRegion('North America','High bloom — post-supply-chain disruption local trade surging. Strong tech + social maturity.','#1D9E75','94')">
+            <path d="M80 60 L160 50 L180 80 L170 130 L140 150 L100 140 L70 110 Z" fill="#5DCAA5" opacity="0.8" stroke="var(--color-background-primary)" stroke-width="1.5"/>
+            <text x="125" y="105" font-size="10" font-weight="500" fill="#04342C" text-anchor="middle">N. America</text>
+            <text x="125" y="117" font-size="9" fill="#085041" text-anchor="middle">Bloom: 94</text>
+          </g>
+          <!-- South America -->
+          <g class="node" onclick="showRegion('South America','Growing bloom — climate tech and agritech revival strong. Political instability moderates score.','#EF9F27','71')">
+            <path d="M110 170 L165 165 L175 200 L160 250 L130 265 L105 240 L100 200 Z" fill="#FAC775" opacity="0.8" stroke="var(--color-background-primary)" stroke-width="1.5"/>
+            <text x="138" y="215" font-size="10" font-weight="500" fill="#412402" text-anchor="middle">S. America</text>
+            <text x="138" y="227" font-size="9" fill="#633806" text-anchor="middle">Bloom: 71</text>
+          </g>
+          <!-- Europe -->
+          <g class="node" onclick="showRegion('Europe','Strong bloom for decentralized energy and defense tech. Capital tighter post-rate hikes.','#1D9E75','86')">
+            <path d="M280 50 L360 45 L375 80 L365 110 L330 120 L290 110 L270 80 Z" fill="#5DCAA5" opacity="0.8" stroke="var(--color-background-primary)" stroke-width="1.5"/>
+            <text x="322" y="88" font-size="10" font-weight="500" fill="#04342C" text-anchor="middle">Europe</text>
+            <text x="322" y="100" font-size="9" fill="#085041" text-anchor="middle">Bloom: 86</text>
+          </g>
+          <!-- Russia/EEA - conflict zone -->
+          <g class="node" onclick="showRegion('Russia / E. Europe','Active conflict zone. Bloom suppressed. Defense and recovery tech flagged as high-value post-resolution.','#E24B4A','22')">
+            <path d="M370 40 L530 35 L540 90 L490 110 L390 105 L365 75 Z" fill="#F09595" opacity="0.7" stroke="var(--color-background-primary)" stroke-width="1.5"/>
+            <text x="452" y="73" font-size="10" font-weight="500" fill="#501313" text-anchor="middle">Russia / E. Europe ⚠</text>
+            <text x="452" y="85" font-size="9" fill="#791F1F" text-anchor="middle">Conflict zone · Bloom: 22</text>
+          </g>
+          <!-- Middle East - conflict -->
+          <g class="node" onclick="showRegion('Middle East','Active conflict and geopolitical pressure. Energy transition opportunities significant post-stabilization.','#E24B4A','31')">
+            <path d="M370 115 L430 110 L445 150 L420 175 L380 165 L360 140 Z" fill="#F09595" opacity="0.7" stroke="var(--color-background-primary)" stroke-width="1.5"/>
+            <text x="402" y="145" font-size="10" font-weight="500" fill="#501313" text-anchor="middle">Middle East ⚠</text>
+            <text x="402" y="157" font-size="9" fill="#791F1F" text-anchor="middle">Bloom: 31</text>
+          </g>
+          <!-- Africa -->
+          <g class="node" onclick="showRegion('Africa','Emerging bloom — mobile-first fintech and agritech strong. Infrastructure gap creates opportunity.','#EF9F27','62')">
+            <path d="M290 135 L365 130 L370 200 L340 260 L300 270 L275 230 L270 175 Z" fill="#FAC775" opacity="0.8" stroke="var(--color-background-primary)" stroke-width="1.5"/>
+            <text x="320" y="200" font-size="10" font-weight="500" fill="#412402" text-anchor="middle">Africa</text>
+            <text x="320" y="212" font-size="9" fill="#633806" text-anchor="middle">Bloom: 62</text>
+          </g>
+          <!-- South Asia -->
+          <g class="node" onclick="showRegion('South Asia','High bloom — massive digital adoption, manufacturing shift from China, strong post-war recovery from local conflicts.','#1D9E75','89')">
+            <path d="M460 105 L540 100 L555 145 L520 170 L470 160 L450 135 Z" fill="#5DCAA5" opacity="0.8" stroke="var(--color-background-primary)" stroke-width="1.5"/>
+            <text x="502" y="137" font-size="10" font-weight="500" fill="#04342C" text-anchor="middle">S. Asia</text>
+            <text x="502" y="149" font-size="9" fill="#085041" text-anchor="middle">Bloom: 89</text>
+          </g>
+          <!-- East Asia -->
+          <g class="node" onclick="showRegion('East Asia','High tech maturity bloom. Geotrade tension with West creates local-supply-chain opportunity. EV and battery tech surging.','#1D9E75','82')">
+            <path d="M545 60 L640 55 L650 110 L610 130 L555 120 L540 90 Z" fill="#5DCAA5" opacity="0.8" stroke="var(--color-background-primary)" stroke-width="1.5"/>
+            <text x="595" y="95" font-size="10" font-weight="500" fill="#04342C" text-anchor="middle">E. Asia</text>
+            <text x="595" y="107" font-size="9" fill="#085041" text-anchor="middle">Bloom: 82</text>
+          </g>
+          <!-- Southeast Asia -->
+          <g class="node" onclick="showRegion('SE Asia','Rising bloom — manufacturing migration, digital commerce growth, climate vulnerability creating greentech demand.','#EF9F27','74')">
+            <path d="M545 140 L610 135 L620 180 L580 195 L545 175 Z" fill="#FAC775" opacity="0.8" stroke="var(--color-background-primary)" stroke-width="1.5"/>
+            <text x="582" y="167" font-size="10" font-weight="500" fill="#412402" text-anchor="middle">SE Asia</text>
+            <text x="582" y="179" font-size="9" fill="#633806" text-anchor="middle">Bloom: 74</text>
+          </g>
+          <!-- Ocean fill -->
+          <rect x="0" y="280" width="680" height="60" fill="var(--color-background-secondary)" rx="4"/>
+          <!-- Region info panel -->
+          <rect id="map-info-bg" x="20" y="290" width="400" height="44" rx="8" fill="var(--color-background-primary)" opacity="0.95"/>
+          <text id="map-info-name" x="34" y="310" font-size="13" font-weight="500" fill="var(--color-text-primary)">Click a region to see bloom conditions</text>
+          <text id="map-info-detail" x="34" y="326" font-size="10" fill="var(--color-text-secondary)"></text>
+          <rect id="map-info-badge" x="430" y="296" width="0" height="28" rx="14" fill="#1D9E75" opacity="0"/>
+          <text id="map-info-score" x="452" y="315" font-size="14" font-weight="500" fill="#fff" opacity="0"></text>
+        </svg>
+        <div class="map-legend">
+          <span><span class="legend-dot" style="background:#5DCAA5"></span>High bloom (80–100)</span>
+          <span><span class="legend-dot" style="background:#FAC775"></span>Moderate bloom (60–79)</span>
+          <span><span class="legend-dot" style="background:#F09595"></span>Suppressed — conflict zone</span>
+          <span><span class="legend-dot" style="background:#1D9E75;width:16px;height:4px;border-radius:2px;display:inline-block;margin-right:4px"></span>Trade route active</span>
+        </div>
+      </div>
+    </div>
+    <div class="grid-3">
+      <div class="card"><div class="card-title">Active conflict zones</div>
+        <div style="font-size:28px;font-weight:500;color:#E24B4A">23</div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-top:4px">Russia/Ukraine, Gaza, Myanmar, Sudan +19 others</div>
+        <div style="margin-top:10px;font-size:12px;padding:8px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)">Post-conflict recovery tech bloom avg: <strong>+47pts</strong> within 3yrs</div>
+      </div>
+      <div class="card"><div class="card-title">Trade disruption index</div>
+        <div style="font-size:28px;font-weight:500;color:#EF9F27">6.8<span style="font-size:14px;font-weight:400"> / 10</span></div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-top:4px">Supply chain fragmentation at 14-year high</div>
+        <div style="margin-top:10px;font-size:12px;padding:8px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)">Hyper-local trade platforms bloom score: <strong>94</strong></div>
+      </div>
+      <div class="card"><div class="card-title">Climate stress index</div>
+        <div style="font-size:28px;font-weight:500;color:#639922">7.4<span style="font-size:14px;font-weight:400"> / 10</span></div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-top:4px">Extreme weather events at record frequency</div>
+        <div style="margin-top:10px;font-size:12px;padding:8px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)">Green/agritech bloom signal: <strong>🌱 Very strong</strong></div>
+      </div>
+    </div>
+  </div>
+
+
+ 
+  <!-- SEARCH PANEL -->
+  <div id="panel-search" class="panel">
+    <div class="card" style="margin-bottom: 1rem;">
+      <div class="card-title">Live Company Search & Compare</div>
+      <div style="display:flex; gap:10px; margin-bottom:1rem;">
+        <input type="text" id="searchInput" placeholder="Enter Ticker (e.g. AAPL, TSLA)" style="flex:1; padding:10px; background:var(--color-background-secondary); border:1px solid var(--color-border-secondary); color:var(--color-text-primary); border-radius:4px;">
+        <button onclick="doSearch()" style="padding:10px 20px; font-weight:bold;">Search</button>
+      </div>
+      <div id="searchControls" style="display:none; margin-bottom:1rem;">
+         <input type="text" id="compareInput" placeholder="Compare with..." style="padding:8px; background:var(--color-background-secondary); border:1px solid var(--color-border-secondary); color:var(--color-text-primary); border-radius:4px;">
+         <button onclick="doCompare()" style="padding:8px 16px;">Add to Compare</button>
+         <button onclick="resetSearch()" style="padding:8px 16px; margin-left:10px; background:var(--color-background-tertiary);">Clear</button>
+      </div>
+     
+      <!-- Compare Grid -->
+      <div id="compareGrid" style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+        <!-- Container for Company 1 -->
+        <div id="searchRes1"></div>
+        <!-- Container for Company 2 -->
+        <div id="searchRes2"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- FORECAST PANEL -->
+  <div id="panel-forecast" class="panel">
+    <div class="card">
+      <div class="card-title">Macro Predictive Profitability Forecast</div>
+      <p style="font-size:12px; color:var(--color-text-secondary); margin-bottom:1rem;">Based on live global indices (War Index, Climate Stress, Capital Tightness). Models project long-term capital advantage flows.</p>
+      <div id="forecast-list" style="display:flex; flex-direction:column; gap:12px;"></div>
+    </div>
+  </div>
+
+
+  <!-- ML ENGINE PANEL -->
+  <div id="panel-model" class="panel">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Classifier performance (XGBoost)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+          <div class="metric"><div class="metric-label">Accuracy</div><div class="metric-value">91.4%</div></div>
+          <div class="metric"><div class="metric-label">F1 Score</div><div class="metric-value">0.89</div></div>
+          <div class="metric"><div class="metric-label">Precision</div><div class="metric-value">0.88</div></div>
+          <div class="metric"><div class="metric-label">Recall</div><div class="metric-value">0.90</div></div>
+        </div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em">Confusion matrix (normalized)</div>
+        <svg width="100%" viewBox="0 0 280 180">
+          <rect x="60" y="20" width="50" height="50" fill="#5DCAA5" rx="4"/><text x="85" y="49" font-size="16" font-weight="500" fill="#04342C" text-anchor="middle">91%</text>
+          <rect x="115" y="20" width="50" height="50" fill="#F09595" opacity="0.5" rx="4"/><text x="140" y="49" font-size="16" font-weight="500" fill="#501313" text-anchor="middle">9%</text>
+          <rect x="60" y="75" width="50" height="50" fill="#F09595" opacity="0.5" rx="4"/><text x="85" y="104" font-size="16" font-weight="500" fill="#501313" text-anchor="middle">8%</text>
+          <rect x="115" y="75" width="50" height="50" fill="#5DCAA5" rx="4"/><text x="140" y="104" font-size="16" font-weight="500" fill="#04342C" text-anchor="middle">92%</text>
+          <text x="85" y="145" font-size="10" fill="var(--color-text-secondary)" text-anchor="middle">Pred: Fail</text>
+          <text x="140" y="145" font-size="10" fill="var(--color-text-secondary)" text-anchor="middle">Pred: Bloom</text>
+          <text x="50" y="50" font-size="10" fill="var(--color-text-secondary)" text-anchor="end">Act: Fail</text>
+          <text x="50" y="105" font-size="10" fill="var(--color-text-secondary)" text-anchor="end">Act: Bloom</text>
+        </svg>
+        <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:10px; font-size:11px; margin-top:12px; line-height:1.6; color:var(--color-text-secondary);">
+          <strong style="color:var(--color-text-success);">XGBoost Architecture:</strong> The classifier transforms qualitative events (like a factory closure in Taiwan or a new AI breakthrough) into quantitative Bloom Features. High geopolitical stress ("War Index") paired with tight capital ("Capital context") heavily punishes consumer goods while exponentially boosting defense/resilience tech probabilities. The model handles the non-linear interplay beautifully.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Forecaster performance (LSTM/Prophet)</div>
+        <div style="height: 180px; position: relative; width: 100%;"><canvas id="lstmChart" role="img" aria-label="LSTM market seasonality forecast showing predicted vs actual bloom cycles"></canvas></div>
+        <div style="margin-top:12px">
+          <div class="feat-row"><div class="feat-name">RMSE</div><div class="feat-bar-wrap"><div class="feat-bar" style="width:15%;background:#E24B4A"></div></div><div class="feat-val">0.08</div></div>
+          <div class="feat-row"><div class="feat-name">MAE</div><div class="feat-bar-wrap"><div class="feat-bar" style="width:12%;background:#E24B4A"></div></div><div class="feat-val">0.06</div></div>
+          <div class="feat-row"><div class="feat-name">R²</div><div class="feat-bar-wrap"><div class="feat-bar" style="width:94%;background:#1D9E75"></div></div><div class="feat-val">0.94</div></div>
+        </div>
+        <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:10px; font-size:11px; margin-top:12px; line-height:1.6; color:var(--color-text-secondary);">
+          <strong style="color:var(--color-text-success);">LSTM Sequence Forecaster:</strong> This deep learning forecaster scans historical market recovery cycles (such as the dot-com crash or 2008 financial crisis) and maps them to today's temporal patterns. By observing the sequences of fed fund rate changes combined with lagging tech maturity spikes, it successfully predicts the exact start of "bull seasons" for previously failed categories.
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- FORMULA PANEL -->
+  <div id="panel-formula" class="panel">
+    <div class="card" style="margin-bottom:1rem">
+      <div class="card-title">Bloom Score Formula — Interactive Calculator</div>
+      <div class="bloom-formula">
+        BloomScore = [(<span class="formula-var">T_now</span> × <span class="formula-var">S_now</span>) + (<span class="formula-var">C_now</span> × <span class="formula-var">W_now</span>)] ÷ <span class="formula-var">R_past</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+        <div>
+          <div style="margin-bottom:12px">
+            <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:4px">T_now — Tech maturity (0–10)</div>
+            <div style="display:flex;align-items:center;gap:8px"><input type="range" id="t_now" min="0" max="10" value="8" step="0.1" oninput="calcBloom()"><span id="t_val" style="font-size:13px;font-weight:500;min-width:28px">8.0</span></div>
+          </div>
+          <div style="margin-bottom:12px">
+            <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:4px">S_now — Social readiness (0–10)</div>
+            <div style="display:flex;align-items:center;gap:8px"><input type="range" id="s_now" min="0" max="10" value="7" step="0.1" oninput="calcBloom()"><span id="s_val" style="font-size:13px;font-weight:500;min-width:28px">7.0</span></div>
+          </div>
+          <div style="margin-bottom:12px">
+            <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:4px">C_now — Capital climate (0–10)</div>
+            <div style="display:flex;align-items:center;gap:8px"><input type="range" id="c_now" min="0" max="10" value="4" step="0.1" oninput="calcBloom()"><span id="c_val" style="font-size:13px;font-weight:500;min-width:28px">4.0</span></div>
+          </div>
+          <div style="margin-bottom:12px">
+            <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:4px">W_now — War/stability (0–10, 10=peaceful)</div>
+            <div style="display:flex;align-items:center;gap:8px"><input type="range" id="w_now" min="0" max="10" value="6" step="0.1" oninput="calcBloom()"><span id="w_val" style="font-size:13px;font-weight:500;min-width:28px">6.0</span></div>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:4px">R_past — Past failure weight (1–5, 5=hardest)</div>
+            <div style="display:flex;align-items:center;gap:8px"><input type="range" id="r_past" min="1" max="5" value="2" step="0.1" oninput="calcBloom()"><span id="r_val" style="font-size:13px;font-weight:500;min-width:28px">2.0</span></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center">
+          <div style="font-size:11px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:8px">Bloom Score</div>
+          <svg width="180" height="180" viewBox="0 0 180 180">
+            <circle cx="90" cy="90" r="70" fill="none" stroke="var(--color-border-tertiary)" stroke-width="12"/>
+            <circle id="bloom-ring" cx="90" cy="90" r="70" fill="none" stroke="#1D9E75" stroke-width="12" stroke-linecap="round"
+              stroke-dasharray="440" stroke-dashoffset="176"
+              transform="rotate(-90 90 90)"/>
+            <text id="bloom-score-val" x="90" y="85" text-anchor="middle" font-size="42" font-weight="500" fill="var(--color-text-primary)">80</text>
+            <text id="bloom-label" x="90" y="108" text-anchor="middle" font-size="13" fill="#1D9E75">Strong bloom</text>
+          </svg>
+          <button onclick="sendPrompt('Explain the mathematical reasoning behind the Bloom Score formula — especially the timing delta logic and how to normalize each variable')" style="margin-top:8px;font-size:12px;padding:8px 16px">Explain the math ↗</button>
+        </div>
+      </div>
+      <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;font-size:12px;line-height:1.8">
+        <strong>Mathematical logic:</strong> The formula computes an <em>environmental alignment delta</em> — the numerator captures the product of current favorable conditions (tech × social demand, capital × stability), while R_past normalizes against how deeply entrenched the original failure reason was. A timing mismatch (R=2) yields a higher score than a fundamental market problem (R=5), reflecting that timing failures are more "reversible" by changing conditions.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+let ideaData = [];
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const gridColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+const textColor = isDark ? '#888780' : '#73726c';
+
+
+async function initDashboard() {
+  try {
+    // 1. Fetch live Comeback Kids
+    const kidsRes = await fetch('http://127.0.0.1:8000/api/comeback-kids');
+    ideaData = await kidsRes.json();
+   
+    let htmlStr = '';
+    ideaData.forEach((d, i) => {
+      htmlStr += `
+        <div class="kid" onclick="showDetail(${i})">
+          <div class="kid-icon" style="background:${d.bg}">${d.icon}</div>
+          <div>
+            <div class="kid-name">${d.name}</div>
+            <div class="kid-meta">${d.story}</div>
+          </div>
+          <div class="kid-score ${d.scoreClass}">${d.score}</div>
+        </div>`;
+    });
+    document.getElementById('kids-list').innerHTML = htmlStr;
+
+
+    // 2. Fetch Map Data
+    const mapRes = await fetch('http://127.0.0.1:8000/api/geotrade-map');
+    const mapData = await mapRes.json();
+    // Pre-populate SVG mappings dynamically if required, here we just bind the data to an array for now
+    window.mapDataCache = mapData;
+   
+    // 3. Fetch Graph Data
+    const chartRes = await fetch('http://127.0.0.1:8000/api/market-forecast');
+    const chartData = await chartRes.json();
+   
+    // Render Spark Chart
+    new Chart(document.getElementById('sparkChart'), {
+      type: 'line',
+      data: {
+        labels: chartData.spark.labels,
+        datasets: [
+          { label:'Actual', data: chartData.spark.actual, borderColor:'#1D9E75', backgroundColor:'rgba(29,158,117,0.08)', tension:0.4, borderWidth:2, pointRadius:3, fill:true },
+          { label:'Forecast', data: chartData.spark.forecast, borderColor:'#EF9F27', borderDash:[5,4], backgroundColor:'rgba(239,159,39,0.05)', tension:0.4, borderWidth:2, pointRadius:3, fill:true }
+        ]
+      },
+      options: { animation: false, responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{grid:{color:gridColor},ticks:{color:textColor,font:{size:10}}},y:{min:50,max:100,grid:{color:gridColor},ticks:{color:textColor,font:{size:10}}}}}
+    });
+
+
+    // Render LSTM Chart
+    new Chart(document.getElementById('lstmChart'), {
+      type: 'line',
+      data: {
+        labels: chartData.lstm.labels,
+        datasets: [
+          { label:'Actual', data: chartData.lstm.actual, borderColor:'#1D9E75', tension:0.4, borderWidth:2, pointRadius:2 },
+          { label:'LSTM pred', data: chartData.lstm.pred, borderColor:'#534AB7', borderDash:[4,3], tension:0.4, borderWidth:1.5, pointRadius:2 }
+        ]
+      },
+      options: { animation: false, responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{font:{size:10},color:textColor,boxWidth:12}}}, scales:{x:{grid:{color:gridColor},ticks:{color:textColor,font:{size:9}}},y:{grid:{color:gridColor},ticks:{color:textColor,font:{size:10}}}}}
+    });
+
+
+  } catch (err) {
+    console.error("Error fetching live data:", err);
+  }
+}
+
+
+function showDetail(i) {
+  const d = ideaData[i];
+  document.getElementById('detail-icon').style.background = d.bg;
+  document.getElementById('detail-icon').textContent = d.icon;
+  document.getElementById('detail-name').textContent = d.name;
+  document.getElementById('detail-story').textContent = d.story;
+  document.getElementById('detail-body').textContent = d.body;
+  const grid = document.getElementById('detail-grid');
+  grid.innerHTML = d.stats.map(s=>`<div class="detail-stat"><div class="detail-stat-val">${s.v}</div><div class="detail-stat-label">${s.l}</div></div>`).join('');
+  document.getElementById('detail-panel').classList.add('visible');
+}
+
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('panel-'+tab).classList.add('active');
+}
+
+
+function showRegion(name, detail, color, score) {
+  // If we have dynamic data, override parameters
+  if (window.mapDataCache) {
+      const match = window.mapDataCache.find(r => r.name.includes(name) || name.includes(r.name));
+      if (match) {
+          detail = match.detail;
+          color = match.color;
+          score = match.score;
+      }
+  }
+
+
+  document.getElementById('map-info-name').textContent = name + ' — Bloom: ' + score;
+  document.getElementById('map-info-detail').textContent = detail.substring(0, 90) + '…';
+  const badge = document.getElementById('map-info-badge');
+  badge.setAttribute('fill', color);
+  badge.setAttribute('opacity', '0.9');
+  badge.setAttribute('width', '70');
+  const scoreEl = document.getElementById('map-info-score');
+  scoreEl.textContent = score;
+  scoreEl.setAttribute('x', '465');
+  scoreEl.setAttribute('opacity', '1');
+}
+
+
+function calcBloom() {
+  const t = parseFloat(document.getElementById('t_now').value);
+  const s = parseFloat(document.getElementById('s_now').value);
+  const c = parseFloat(document.getElementById('c_now').value);
+  const w = parseFloat(document.getElementById('w_now').value);
+  const r = parseFloat(document.getElementById('r_past').value);
+  document.getElementById('t_val').textContent = t.toFixed(1);
+  document.getElementById('s_val').textContent = s.toFixed(1);
+  document.getElementById('c_val').textContent = c.toFixed(1);
+  document.getElementById('w_val').textContent = w.toFixed(1);
+  document.getElementById('r_val').textContent = r.toFixed(1);
+  const raw = ((t * s) + (c * w)) / r;
+  const score = Math.min(100, Math.round(raw * 100 / 25));
+  document.getElementById('bloom-score-val').textContent = score;
+  const color = score >= 75 ? '#1D9E75' : score >= 50 ? '#EF9F27' : '#E24B4A';
+  const label = score >= 75 ? 'Strong bloom' : score >= 50 ? 'Emerging bloom' : 'Dormant';
+  document.getElementById('bloom-ring').setAttribute('stroke', color);
+  document.getElementById('bloom-ring').setAttribute('stroke-dashoffset', Math.round(440 * (1 - score/100)));
+  document.getElementById('bloom-label').textContent = label;
+  document.getElementById('bloom-label').setAttribute('fill', color);
+}
+
+
+
+
+async function fetchForecast() {
+  try {
+    const res = await fetch('http://127.0.0.1:8000/api/macro-forecast');
+    const data = await res.json();
+    let htmlStr = '';
+    data.forEach(item => {
+      htmlStr += `
+        <div style="background:var(--color-background-secondary); padding:16px; border-radius:8px; border-left:4px solid ${item.color};">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <div style="font-weight:600; font-size:14px; color:var(--color-text-primary);">${item.sector}</div>
+            <div style="font-weight:bold; font-size:18px; color:${item.color};">Bloom: ${item.forecast_bloom}</div>
+          </div>
+          <div style="font-size:12px; color:var(--color-text-secondary); line-height:1.5;">${item.rationale}</div>
+        </div>
+      `;
+    });
+    document.getElementById('forecast-list').innerHTML = htmlStr;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+
+function renderCompanyCard(data) {
+  if (data.error) return `<div style="color:var(--color-text-danger);">${data.error}</div>`;
+  return `
+    <div style="padding:16px; background:var(--color-background-tertiary); border:1px solid var(--color-border-secondary); border-radius:8px;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+         <div style="font-size:18px; font-weight:bold; color:var(--color-text-primary);">${data.ticker} <span style="font-size:12px; font-weight:normal; color:var(--color-text-secondary);">${data.sector}</span></div>
+         <div style="font-size:24px; font-weight:900; color:${data.color};">${data.bloom_score}</div>
+      </div>
+      <div style="font-size:14px; margin-top:4px;">${data.name}</div>
+      <div style="font-size:20px; font-family:monospace; margin-top:8px;">$${data.price}</div>
+      <div style="margin-top:12px; font-size:12px; line-height:1.5; color:var(--color-text-secondary); border-top:1px solid var(--color-border-secondary); padding-top:8px;">
+        ${data.story}
+      </div>
+    </div>
+  `;
+}
+
+
+async function doSearch() {
+  const ticker = document.getElementById('searchInput').value;
+  if (!ticker) return;
+  document.getElementById('searchRes1').innerHTML = "Loading...";
+  try {
+    const res = await fetch('http://127.0.0.1:8000/api/search-company?ticker=' + ticker);
+    const data = await res.json();
+    document.getElementById('searchRes1').innerHTML = renderCompanyCard(data);
+    document.getElementById('searchControls').style.display = 'flex';
+  } catch(e) {
+    document.getElementById('searchRes1').innerHTML = "Error loading.";
+  }
+}
+
+
+async function doCompare() {
+  const ticker = document.getElementById('compareInput').value;
+  if (!ticker) return;
+  document.getElementById('searchRes2').innerHTML = "Loading...";
+  try {
+    const res = await fetch('http://127.0.0.1:8000/api/search-company?ticker=' + ticker);
+    const data = await res.json();
+    document.getElementById('searchRes2').innerHTML = renderCompanyCard(data);
+  } catch(e) {
+    document.getElementById('searchRes2').innerHTML = "Error loading.";
+  }
+}
+
+
+function resetSearch() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('compareInput').value = '';
+  document.getElementById('searchRes1').innerHTML = '';
+  document.getElementById('searchRes2').innerHTML = '';
+  document.getElementById('searchControls').style.display = 'none';
+}
+
+
+// Intercept switchTab to initiate forecast fetch
+const oldSwitchTab = switchTab;
+window.switchTab = function(tab) {
+  oldSwitchTab(tab);
+  if (tab === 'forecast') fetchForecast();
+}
+
+
+document.addEventListener('DOMContentLoaded', initDashboard);
+</script>
+

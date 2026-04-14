@@ -1,0 +1,26 @@
+# Core backend
+fastapi==0.110.0
+uvicorn==0.29.0
+
+# Data handling
+pandas==2.2.2
+numpy==1.26.4
+
+# Machine Learning
+scikit-learn==1.4.2
+xgboost==2.0.3
+
+# Deep Learning (for LSTM/forecasting)
+tensorflow==2.16.1
+
+# API + HTTP
+requests==2.31.0
+
+# Environment variables
+python-dotenv==1.0.1
+
+# Visualization (if used in backend/analysis)
+matplotlib==3.8.4
+
+# Optional (for future improvements)
+prophet==1.1.5
